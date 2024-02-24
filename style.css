@@ -4,6 +4,21 @@
     font-family: "Poppins", sans-serif;
 }
 
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    position: relative;
+}
+
+header, main, footer {
+    padding: 0 5vw;
+}
+
+footer {
+    padding-bottom: 27px;
+}
+
 h1 {
     font-weight: 800;
     font-size: 64px;
@@ -12,7 +27,6 @@ h1 {
 
 main {
     display: flex;
-    padding: 0 5vw;
 }
 
 main > div {
@@ -33,8 +47,9 @@ input {
     margin-bottom: 10px;
 }
 
-form button {
+button {
     width: min-content;
+    height: min-content;
     padding: 8px 40px;
     margin-top: 10px;
     font-weight: 700;
@@ -42,6 +57,7 @@ form button {
     border-radius: 7px;
     background-color: #D9D9D9;
     font-size: 14px;
+    white-space: nowrap;
 }
 
 form label {
@@ -52,4 +68,81 @@ h2 {
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 5px;
+}
+
+header.games {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+header.games h1 {
+    font-size: 40px;
+}
+
+.games > button {
+    font-size: 18px;
+}
+
+main.games {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    main.games {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    main.games {
+        grid-template-columns: 1fr;
+    }
+}
+
+.games > div {
+    background-color: #EAEAEA;
+    padding: 24px;
+    border-radius: 7px;
+    height: min-content;
+}
+
+main.games  button {
+    width: 100%;
+}
+
+.games h2 {
+    margin: 0;
+}
+
+.games ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 54px;
+}
+
+.games li {
+    margin-bottom: 7px;
+    font-weight: 300;
+}
+
+body.games {
+    display: flex;
+    flex-direction: column;
+}
+
+main.games {
+    flex: 1;
+    padding-bottom: 96px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
 }
