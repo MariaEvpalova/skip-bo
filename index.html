@@ -5,8 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Skip-Bo</title>
         <link rel="stylesheet" href="style.css" />
+        <script src="script.js" defer></script>
+        <script src="games.js" defer></script>
     </head>
-    <body>
+    <body class="rules">
         <header>
             <h1>Skip-Bo</h1>
         </header>
@@ -14,7 +16,7 @@
         <main>
             <div>
                 <h2>Вход</h2>
-                <form action="/login" method="post">
+                <form id="loginForm">
                     <div>
                         <label for="login">Логин:</label>
                         <input type="text" id="login" name="login" />
@@ -24,12 +26,12 @@
                         <input type="password" id="password" name="password" />
                     </div>
                     <div>
-                        <button type="submit">Вход</button>
+                        <button type="button" id="loginButton">Вход</button>
                     </div>
                 </form>
 
                 <h2>Регистрация</h2>
-                <form action="/register" method="post">
+                <form id="registrationForm">
                     <div>
                         <label for="reg-login">Логин:</label>
                         <input type="text" id="reg-login" name="login" />
@@ -42,9 +44,12 @@
                             name="password" />
                     </div>
                     <div>
-                        <button type="submit">Регистрация</button>
+                        <button type="button" id="registerButton">
+                            Регистрация
+                        </button>
                     </div>
                 </form>
+                <p id="error-message"></p>
             </div>
 
             <div>
@@ -96,6 +101,5 @@
                 </ol>
             </div>
         </main>
-        <script src="script.js"></script>
     </body>
 </html>
