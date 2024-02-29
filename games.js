@@ -1,10 +1,8 @@
 async function setupGamePage(playerName) {
-    // Clear the body's innerHTML and remove any existing classes
     document.body.innerHTML = '';
     document.body.className = '';
     document.body.classList.add('games');
 
-    // Updated static part of the page with a hidden form and overlay for creating a new game
     const staticContent = `
         <header class="games">
             <h1>Имя Пользователя: ${playerName}</h1>
@@ -31,7 +29,6 @@ async function setupGamePage(playerName) {
 
     document.body.innerHTML = staticContent;
 
-    // Add event listeners
     document
         .getElementById('newGameButton')
         .addEventListener('click', function () {
@@ -44,9 +41,8 @@ async function setupGamePage(playerName) {
         .addEventListener('click', async function () {
             const numPlayers = document.getElementById('numPlayers').value;
             const moveDuration = document.getElementById('moveDuration').value;
-            // Assuming 'login' and 'password' need to be fetched from somewhere or provided as input
-            const login = 'exampleLogin'; // Placeholder
-            const password = 'examplePassword'; // Placeholder
+            const login = 'exampleLogin';
+            const password = 'examplePassword';
 
             try {
                 const result = await fetchData('createGame', [

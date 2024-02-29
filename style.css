@@ -172,3 +172,60 @@ footer {
         display: none; /* Initially hidden */
         z-index: 2; /* Above the overlay */
     }
+
+
+
+#discardCards button, #playerHand .cards button {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+#gameField {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#gameField main {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr;
+    grid-template-rows: 2fr 1fr;
+    gap: 10vh;
+}
+
+.otherPlayer img {
+    width: 36px;
+}
+
+.otherPlayer h2 {
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.mainPiles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#playerHand img, #StockDiscard img {
+    width: 72px;
+}
+
+#playerHand #finishButton {
+    padding: 12px;
+}
+
+#playerHand #playerName {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#StockDiscard {
+    display: flex;
+    gap: 120px;
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Skip-Bo</title>
+        <link rel="stylesheet" href="style.css" />
+        <script src="script.js" defer></script>
+        <script src="gameFlow.js" defer></script>
+    </head>
+    <body id="gameField">
+        <header><button>Выйти</button></header>
+        <main>
+            <div id="otherCards">
+                <div class="otherPlayer">
+                    <h2>Player 1</h2>
+                    <div>
+                        <img src="cards/1.svg" alt="" class="discard" />
+                        <img src="cards/2.svg" alt="" class="discard" />
+                        <img src="cards/3.svg" alt="" class="discard" />
+                        <img src="cards/4.svg" alt="" class="discard" />
+                        <img src="cards/5.svg" alt="" class="stock" />
+                    </div>
+                </div>
+                <div class="otherPlayer">
+                    <h2>Player 2</h2>
+                    <div>
+                        <img src="cards/1.svg" alt="" class="discard" />
+                        <img src="cards/2.svg" alt="" class="discard" />
+                        <img src="cards/3.svg" alt="" class="discard" />
+                        <img src="cards/4.svg" alt="" class="discard" />
+                        <img src="cards/5.svg" alt="" class="stock" />
+                    </div>
+                </div>
+                <div class="otherPlayer">
+                    <h2>Player 3</h2>
+                    <div>
+                        <img src="cards/1.svg" alt="" class="discard" />
+                        <img src="cards/2.svg" alt="" class="discard" />
+                        <img src="cards/3.svg" alt="" class="discard" />
+                        <img src="cards/4.svg" alt="" class="discard" />
+                        <img src="cards/5.svg" alt="" class="stock" />
+                    </div>
+                </div>
+                <div class="otherPlayer">
+                    <h2>Player 4</h2>
+                    <div>
+                        <img src="cards/1.svg" alt="" class="discard" />
+                        <img src="cards/2.svg" alt="" class="discard" />
+                        <img src="cards/3.svg" alt="" class="discard" />
+                        <img src="cards/4.svg" alt="" class="discard" />
+                        <img src="cards/5.svg" alt="" class="stock" />
+                    </div>
+                </div>
+            </div>
+            <div class="mainPiles">
+                <img src="cards/6.svg" alt="" class="building" />
+                <img src="cards/7.svg" alt="" class="building" />
+                <img src="cards/8.svg" alt="" class="building" />
+                <img src="cards/9.svg" alt="" class="building" />
+                <img src="cards/10.svg" alt="" class="draw" />
+            </div>
+            <div id="playerHand">
+                <div class="cards">
+                    <button>
+                        <img src="cards/11.svg" alt="" />
+                    </button>
+                    <button>
+                        <img src="cards/12.svg" alt="" />
+                    </button>
+                    <button>
+                        <img src="cards/0.svg" alt="" />
+                    </button>
+                    <button>
+                        <img src="cards/1.svg" alt="" />
+                    </button>
+                    <button>
+                        <img src="cards/2.svg" alt="" />
+                    </button>
+                </div>
+                <div id="playerName">
+                    <h2>PlayerName hand</h2>
+                    <button id="finishButton">Закончить ход</button>
+                </div>
+            </div>
+            <div id="StockDiscard">
+                <div id="stock">
+                    <img src="cards/7.svg" alt="" />
+                    <h2>26</h2>
+                </div>
+                <div>
+                    <div id="discardCards">
+                        <button>
+                            <img src="cards/1.svg" alt="" />
+                        </button>
+                        <button>
+                            <img src="cards/2.svg" alt="" />
+                        </button>
+                        <button>
+                            <img src="cards/3.svg" alt="" />
+                        </button>
+                        <button>
+                            <img src="cards/4.svg" alt="" />
+                        </button>
+                        <button>
+                            <img src="cards/5.svg" alt="" />
+                        </button>
+                    </div>
+                    <h2>Discard</h2>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
