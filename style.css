@@ -229,3 +229,11 @@ footer {
     display: flex;
     gap: 120px;
 }
+
+#drawPile {
+    margin-left: 2vw;
+}
+
+#drawPile h2 {
+    margin-top: 0;
+}
