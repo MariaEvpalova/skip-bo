@@ -1,29 +1,39 @@
-async function setupGamePage(playerName) {
+function logout(login, password, token) {
+    fetchData('logout', [login, password, token]);
+    startGame();
+}
+
+async function setupGamePage(login, password, token) {
     document.body.innerHTML = '';
-    document.body.className = '';
-    document.body.classList.add('games');
+    document.body.id = 'games';
 
     const staticContent = `
-        <header class="games">
-            <h1>Имя Пользователя: ${playerName}</h1>
+        <header>
+            <h1>Пользователь ${login}</h1>
             <button id="logoutButton">Выйти</button>
         </header>
-        <main class="games">
+        <main>
             <h1>Мои игры</h1>
             <div class="grid my-games"></div>
             <h1>Доступные игры</h1>
             <div class="grid available-games"></div>
         </main>
-        <footer class="games">
+        <footer>
             <button id="newGameButton">Новая игра</button>
         </footer>
         <div id="overlay"></div>
         <div id="newGameForm">
-            <h2>Создать игру</h2>
-            <label>Количество игроков: <input type="number" id="numPlayers"></label>
-            <label>Продолжительность хода (сек): <input type="number" id="moveDuration"></label>
-            <button id="createGameButton">Создать</button>
-            <button id="closeFormButton" type="button">Закрыть</button>
+            <div>
+                <h2>Создать игру</h2>
+                <div><label>Количество игроков:</label></div>
+                <div><input type="number" id="numPlayers" /></div>
+                <div><label>Продолжительность хода (сек):</label></div>
+                <div><input type="number" id="moveDuration" /></div>
+            </div>
+            <div>
+                <button id="createGameButton">Создать</button>
+                <button id="closeFormButton" type="button">Закрыть</button>
+            </div>
         </div>
     `;
 
@@ -41,8 +51,6 @@ async function setupGamePage(playerName) {
         .addEventListener('click', async function () {
             const numPlayers = document.getElementById('numPlayers').value;
             const moveDuration = document.getElementById('moveDuration').value;
-            const login = 'exampleLogin';
-            const password = 'examplePassword';
 
             try {
                 const result = await fetchData('createGame', [
@@ -51,12 +59,9 @@ async function setupGamePage(playerName) {
                     login,
                     password,
                 ]);
-                // Check result for success if necessary
-                // If successful:
-                window.location.reload();
+                setupGamePage(login, password, token);
             } catch (error) {
                 console.error('Failed to create game:', error);
-                // Handle the error (e.g., show an error message to the user)
             }
         });
     document
@@ -67,9 +72,7 @@ async function setupGamePage(playerName) {
         });
 
     try {
-        let playerGamesData = await fetchData('displayPlayerGames', [
-            playerName,
-        ]);
+        let playerGamesData = await fetchData('displayUserGames', [login]);
         playerGamesData = playerGamesData['RESULTS'][0];
 
         let playerGameElements = ``;
@@ -78,14 +81,16 @@ async function setupGamePage(playerName) {
                 <div class="game">
                     <h2>Игра ${playerGamesData.ID[i]}</h2>
                     <ul>
+                    <li>Продолжительность хода ${playerGamesData.move_duration[i]}</li>
+                    <li>${playerGamesData.current_players[i]} игрока</li>
                         <li>Макс. ${playerGamesData.num_players[i]} игрока</li>
                     </ul>
-                    <button>Присоединиться</button>
+                    <button onclick="enterGame('${login}', '${password}', ${playerGamesData.ID[i]})">Присоединиться</button>
                 </div>
             `;
         }
 
-        let availableGamesData = await fetchData('displayAvailableGames', []);
+        let availableGamesData = await fetchData('displayOtherGames', [login]);
         availableGamesData = availableGamesData['RESULTS'][0];
 
         let availableGameElements = ``;
@@ -95,10 +100,11 @@ async function setupGamePage(playerName) {
                     <h2>Игра ${availableGamesData.ID[i]}</h2>
                     <ul>
                         <li>Админ ${availableGamesData.admin_login[i]}</li>
+                        <li>Продолжительность хода ${availableGamesData.move_duration[i]}</li>
                         <li>${availableGamesData.current_players[i]} игрока</li>
                         <li>Макс. ${availableGamesData.num_players[i]} игрока</li>
                     </ul>
-                    <button>Присоединиться</button>
+                    <button onclick="enterGame('${login}', '${password}', ${availableGamesData.ID[i]})">Присоединиться</button>
                 </div>
             `;
         }
@@ -106,7 +112,21 @@ async function setupGamePage(playerName) {
         document.querySelector('.grid.my-games').innerHTML = playerGameElements;
         document.querySelector('.grid.available-games').innerHTML =
             availableGameElements;
+
+        document
+            .getElementById('logoutButton')
+            .addEventListener('click', () => logout(login, password, token));
     } catch (error) {
         console.error('Failed to fetch game data:', error);
+    }
+}
+
+async function enterGame(login, password, gameID) {
+    const data = await fetchData('enterGame', [gameID, login, password]);
+    const firstKey = Object.keys(data['RESULTS'][0])[0];
+    if (firstKey === 'ERROR') {
+        displayError(data['RESULTS'][0][firstKey]);
+    } else {
+        beginGame(login, password, gameID);
     }
 }

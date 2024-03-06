@@ -68,10 +68,10 @@ async function displayPlayerFirstStock(login, password, gameID) {
             password,
             gameID,
         ]);
-        const firstCardData = firstStockData['RESULTS'][0];
+        const cardData = firstStockData['RESULTS'][0];
 
-        const firstCardValue = firstCardData.card_value[0];
-        const firstCardSrc = `cards/${firstCardValue}.svg`;
+        const cardID = cardData.ID[0];
+        const cardSrc = `cards/${cardData.card_value[0]}.svg`;
 
         const stockCountData = await fetchData('countPlayerStockCards', [
             login,
@@ -82,9 +82,11 @@ async function displayPlayerFirstStock(login, password, gameID) {
 
         const stockContainer = document.querySelector('#stock');
         stockContainer.innerHTML = `
-                <img src="${firstCardSrc}" alt="" />
-                <h2>${stockCount}</h2>
-            `;
+            <button id="card_${cardID}" class="stock-card-button">
+                <img src="${cardSrc}" alt="" />
+            </button>
+            <h2>${stockCount}</h2>
+        `;
     } catch (error) {
         console.error('Failed to display first stock card and count:', error);
     }
@@ -131,9 +133,20 @@ async function displayMainDrawPile(login, password, gameID) {
             const cardValue = cardData.card_value[0];
             const cardSrc = `cards/${cardValue}.svg`;
 
-            document.querySelector('#drawPile img').src = cardSrc;
-            document.querySelector('#drawPile img').id = `card_${cardID}`;
-            document.querySelector('#drawPile img').alt = 'Main Draw Pile Card';
+            const newImg = document.createElement('img');
+            newImg.src = cardSrc;
+            newImg.id = `card_${cardID}`;
+            newImg.alt = 'Main Draw Pile Card';
+            newImg.className = 'draw';
+
+            const drawPileContainer = document.querySelector('#drawPile');
+
+            const existingImg = drawPileContainer.querySelector('img');
+            if (existingImg) {
+                drawPileContainer.removeChild(existingImg);
+            }
+
+            drawPileContainer.appendChild(newImg);
         } else {
             console.log('No data found for the main draw pile.');
         }
@@ -167,7 +180,8 @@ async function displayOthersCards(login, password, gameID) {
             });
         });
 
-        const otherCardsContainer = document.querySelector('#otherCards');
+        const otherCardsContainer =
+            document.querySelector('#otherPlayersCards');
         otherCardsContainer.innerHTML = '';
 
         Object.entries(playersCards).forEach(([playerName, cards]) => {
@@ -198,11 +212,57 @@ async function displayOthersCards(login, password, gameID) {
     }
 }
 
+function initGameField() {
+    document.body.innerHTML = '';
+    document.body.id = 'gameField';
+    document.body.className = '';
+
+    const newContent = `
+        <header><button>Выйти</button></header>
+        <main>
+            <div id="otherPlayersCards"></div>
+            <div id="mainPiles">
+                <div id="gamePiles"></div>
+                <div id="drawPile">
+                    <h2>Main Draw Pile</h2>
+                </div>
+            </div>
+            <div id="playerHand">
+                <div class="cards"></div>
+                <div id="playerName">
+                    <h2>PlayerName hand</h2>
+                    <button id="finishButton">Закончить ход</button>
+                </div>
+            </div>
+            <div id="StockDiscard">
+                <div id="stock"></div>
+                <div>
+                    <div id="discardCards"></div>
+                    <h2>Discard</h2>
+                </div>
+            </div>
+        </main>
+    `;
+
+    document.body.innerHTML = newContent;
+}
+
 function beginGame(login, password, gameID) {
+    initGameField();
     displayPlayerHand(login, password, gameID);
     displayPlayerDiscard(login, password, gameID);
     displayPlayerFirstStock(login, password, gameID);
     displayGamePiles(login, password, gameID);
     displayMainDrawPile(login, password, gameID);
     displayOthersCards(login, password, gameID);
+}
+
+async function exitGame(login, password, gameID) {
+    const data = await fetchData('exitGame', [gameID, login, password]);
+    const firstKey = Object.keys(data['RESULTS'][0])[0];
+    if (firstKey === 'ERROR') {
+        displayError(data['RESULTS'][0][firstKey]);
+    } else {
+        beginGame(login, password, gameID);
+    }
 }

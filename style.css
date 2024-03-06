@@ -11,7 +11,7 @@ html, body {
     position: relative;
 }
 
-body.rules > main > div {
+#rules > main > div {
     width: 50%;
 }
 
@@ -70,18 +70,18 @@ h2 {
     margin-bottom: 5px;
 }
 
-header.games {
+#games header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
 }
 
-.games h1 {
+#games h1 {
     font-size: 40px;
 }
 
-.games > button {
+#games > button {
     font-size: 18px;
 }
 
@@ -114,27 +114,27 @@ div.grid  button {
     width: 100%;
 }
 
-.games h2 {
+#games h2 {
     margin: 0;
 }
 
-.games ul {
+#games ul {
     list-style-type: none;
     padding: 0;
     margin-bottom: 54px;
 }
 
-.games li {
+#games li {
     margin-bottom: 7px;
     font-weight: 300;
 }
 
-body.games {
+#games body {
     display: flex;
     flex-direction: column;
 }
 
-main.games {
+#games main {
     flex: 1;
     padding-bottom: 96px;
     display: flex;
@@ -149,31 +149,37 @@ footer {
     background-color: #ffffff;
 }
 
-    #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5); /* Dim the background */
-        display: none; /* Initially hidden */
-        z-index: 1; /* Ensure it sits above other content */
-    }
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 1;
+}
 
-    /* Centered form style */
-    #newGameForm {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 20px;
-        border-radius: 5px;
-        display: none; /* Initially hidden */
-        z-index: 2; /* Above the overlay */
-    }
+#newGameForm {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    display: none;
+    z-index: 2;
+    flex-direction: column;
+}
 
+#newGameForm label {
+    margin-bottom: 8px;
+}
 
+#newGameForm button {
+    margin-top: 8px;
+}
 
 #discardCards button, #playerHand .cards button {
     background: none;
@@ -194,6 +200,11 @@ footer {
     gap: 10vh;
 }
 
+#gameField .stock-card-button {
+    padding: 0;
+    background-color: none;
+}
+
 .otherPlayer img {
     width: 36px;
 }
@@ -204,7 +215,7 @@ footer {
     font-size: 12px;
 }
 
-.mainPiles {
+#mainPiles {
     display: flex;
     justify-content: center;
     align-items: center;

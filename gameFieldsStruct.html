@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Skip-Bo</title>
+        <link rel="stylesheet" href="style.css" />
+        <script src="start.js" defer></script>
+        <script src="gameFlow.js" defer></script>
+    </head>
+    <body id="gameField">
+        <header><button>Выйти</button></header>
+        <main>
+            <div id="otherPlayersCards"></div>
+            <div id="mainPiles">
+                <div id="gamePiels"></div>
+                <div id="drawPile">
+                    <h2>Main Draw Pile</h2>
+                </div>
+            </div>
+            <div id="playerHand">
+                <div class="cards"></div>
+                <div id="playerName">
+                    <h2>PlayerName hand</h2>
+                    <button id="finishButton">Закончить ход</button>
+                </div>
+            </div>
+            <div id="StockDiscard">
+                <div id="stock"></div>
+                <div>
+                    <div id="discardCards"></div>
+                    <h2>Discard</h2>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
