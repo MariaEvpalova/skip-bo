@@ -248,3 +248,9 @@ footer {
 #drawPile h2 {
     margin-top: 0;
 }
+
+#gameField #gamePiles > button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}

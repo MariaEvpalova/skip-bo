@@ -36,7 +36,7 @@ async function handleFormSubmission(buttonId, pname, loginId, passwordId) {
                 if (firstKey === 'ERROR') {
                     displayError(data['RESULTS'][0][firstKey]);
                 } else {
-                    setupGamePage(login, password, data['RESULTS'][0].tk[0]);
+                    setupGamePage(login, password);
                 }
             } catch (error) {
                 console.error(`${pname} failed`, error);

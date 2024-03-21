@@ -1,9 +1,9 @@
-function logout(login, password, token) {
-    fetchData('logout', [login, password, token]);
+function logout(login, password) {
+    fetchData('logout', [login, password]);
     startGame();
 }
 
-async function setupGamePage(login, password, token) {
+async function setupGamePage(login, password) {
     document.body.innerHTML = '';
     document.body.id = 'games';
 
@@ -59,7 +59,7 @@ async function setupGamePage(login, password, token) {
                     login,
                     password,
                 ]);
-                setupGamePage(login, password, token);
+                setupGamePage(login, password);
             } catch (error) {
                 console.error('Failed to create game:', error);
             }
@@ -115,7 +115,7 @@ async function setupGamePage(login, password, token) {
 
         document
             .getElementById('logoutButton')
-            .addEventListener('click', () => logout(login, password, token));
+            .addEventListener('click', () => logout(login, password));
     } catch (error) {
         console.error('Failed to fetch game data:', error);
     }
@@ -125,8 +125,8 @@ async function enterGame(login, password, gameID) {
     const data = await fetchData('enterGame', [gameID, login, password]);
     const firstKey = Object.keys(data['RESULTS'][0])[0];
     if (firstKey === 'ERROR') {
-        displayError(data['RESULTS'][0][firstKey]);
+        console.log(data['RESULTS'][0][firstKey]);
     } else {
-        beginGame(login, password, gameID);
+        enterGame(login, password, gameID);
     }
 }
