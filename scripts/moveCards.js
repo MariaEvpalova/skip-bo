@@ -46,20 +46,25 @@ async function StockToGamePile(login, password, gameID, cardID, gamePileID) {
     if (firstKey === 'ERROR') {
         console.log(data['RESULTS'][0][firstKey]);
     } else {
-        await displayPlayerFirstStock(login, password, gameID);
-        await displayGamePiles(login, password, gameID);
+        const winner = await gameWinner(gameID);
+        if (winner == login) {
+            loadWinMessage(login, password, gameID);
+        } else {
+            await displayPlayerFirstStock(login, password, gameID);
+            await displayGamePiles(login, password, gameID);
 
-        const stockButton = document.querySelector('.stock-card-button');
-        stockButton.addEventListener('click', function () {
-            StockToGame_handleStockCard(
-                login,
-                password,
-                gameID,
-                stockButton.id
-            );
-        });
+            const stockButton = document.querySelector('.stock-card-button');
+            stockButton.addEventListener('click', function () {
+                StockToGame_handleStockCard(
+                    login,
+                    password,
+                    gameID,
+                    stockButton.id
+                );
+            });
 
-        addGamePileListeners(login, password, gameID);
+            addGamePileListeners(login, password, gameID);
+        }
     }
 }
 

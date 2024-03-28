@@ -1,6 +1,6 @@
 function logout(login, password) {
     fetchData('logout', [login, password]);
-    startGame();
+    start();
 }
 
 async function setupGamePage(login, password) {
@@ -72,8 +72,8 @@ async function setupGamePage(login, password) {
         });
 
     try {
-        let playerGamesData = await fetchData('displayUserGames', [login]);
-        playerGamesData = playerGamesData['RESULTS'][0];
+        const data = await fetchData('auth', [login, password]);
+        const playerGamesData = data['RESULTS'][1];
 
         let playerGameElements = ``;
         for (let i = 0; i < playerGamesData.ID.length; i++) {
@@ -90,8 +90,7 @@ async function setupGamePage(login, password) {
             `;
         }
 
-        let availableGamesData = await fetchData('displayOtherGames', [login]);
-        availableGamesData = availableGamesData['RESULTS'][0];
+        const availableGamesData = data['RESULTS'][2];
 
         let availableGameElements = ``;
         for (let i = 0; i < availableGamesData.ID.length; i++) {
@@ -99,7 +98,6 @@ async function setupGamePage(login, password) {
                 <div class="game">
                     <h2>Игра ${availableGamesData.ID[i]}</h2>
                     <ul>
-                        <li>Админ ${availableGamesData.admin_login[i]}</li>
                         <li>Продолжительность хода ${availableGamesData.move_duration[i]}</li>
                         <li>${availableGamesData.current_players[i]} игрока</li>
                         <li>Макс. ${availableGamesData.num_players[i]} игрока</li>
@@ -107,6 +105,7 @@ async function setupGamePage(login, password) {
                     <button onclick="enterGame('${login}', '${password}', ${availableGamesData.ID[i]})">Присоединиться</button>
                 </div>
             `;
+            //<li>Админ ${availableGamesData.admin_login[i]}</li>
         }
 
         document.querySelector('.grid.my-games').innerHTML = playerGameElements;
@@ -127,6 +126,6 @@ async function enterGame(login, password, gameID) {
     if (firstKey === 'ERROR') {
         console.log(data['RESULTS'][0][firstKey]);
     } else {
-        enterGame(login, password, gameID);
+        enterGameFlow(login, password, gameID);
     }
 }

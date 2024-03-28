@@ -152,7 +152,7 @@ function displayStartPage() {
     document.body.innerHTML = startPageContent;
 }
 
-function startGame() {
+function start() {
     displayStartPage();
     handleFormSubmission('loginButton', 'auth', 'login', 'password');
     handleFormSubmission(
@@ -163,4 +163,4 @@ function startGame() {
     );
 }
 
-startGame();
+start();

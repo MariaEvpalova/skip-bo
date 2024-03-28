@@ -32,18 +32,17 @@ function initGameField() {
     document.body.innerHTML = newContent;
 }
 
-function addButtonsFunctions(login, password, gameID) {
+async function addButtonsFunctions(login, password, gameID) {
     document
         .getElementById('exit')
         .addEventListener('click', () => exitGame(login, password, gameID));
-    document
-        .getElementById('finishButton')
-        .addEventListener('click', () =>
-            initSecondPart(login, password, gameID)
-        );
+
+    const isFirst = await isFirstPlayer(login, gameID);
+    const started = await gameStarted(gameID);
+    if (isFirst && !started) addStartGameButton(login, password, gameID);
 }
 
-function addFinishButton(login, password, gameID) {
+function addFinishTurnButton(login, password, gameID) {
     var playerNameElement = document.getElementById('playerName');
 
     var finishButton = document.createElement('button');
@@ -55,21 +54,71 @@ function addFinishButton(login, password, gameID) {
     document
         .getElementById('finishButton')
         .addEventListener('click', () =>
-            initSecondPart(login, password, gameID)
+            roundSecondPart(login, password, gameID)
         );
 }
 
-function removeFinishButton() {
+function removeFinishTurnButton() {
     var finishButton = document.getElementById('finishButton');
     if (finishButton) finishButton.parentNode.removeChild(finishButton);
 }
 
-async function exitGame(login, password, gameID) {
-    const data = await fetchData('exitGame', [gameID, login, password]);
-    const firstKey = Object.keys(data['RESULTS'][0])[0];
-    if (firstKey === 'ERROR') {
-        console.log(data['RESULTS'][0][firstKey]);
-    } else {
-        setupGamePage(login, password);
-    }
+function addStartGameButton(login, password, gameID) {
+    var playerNameElement = document.getElementById('playerName');
+
+    var startGameButton = document.createElement('button');
+    startGameButton.id = 'startGameButton';
+    startGameButton.textContent = 'Начать игру';
+
+    playerNameElement.appendChild(startGameButton);
+
+    document
+        .getElementById('startGameButton')
+        .addEventListener('click', () => startGame(login, password, gameID));
+}
+
+function removeStartGameButton() {
+    var startGameButton = document.getElementById('startGameButton');
+    if (startGameButton)
+        startGameButton.parentNode.removeChild(startGameButton);
+}
+
+function loadWinMessage(login, password, gameID) {
+    const overlay = document.createElement('div');
+    overlay.id = 'overlay';
+
+    const messageBox = document.createElement('div');
+    messageBox.id = 'overlayMessage';
+    messageBox.innerHTML = `
+        <p>Поздравляем! Вы выиграли</p>
+        <button id="exitButton">Выйти</button>
+    `;
+
+    overlay.appendChild(messageBox);
+    document.body.appendChild(overlay);
+
+    document
+        .getElementById('exitButton')
+        .addEventListener('click', () => exitGame(login, password, gameID));
+}
+
+async function loadOtherWinMessage(login, password, gameID) {
+    const winner = await gameWinner(gameID);
+
+    const overlay = document.createElement('div');
+    overlay.id = 'overlay';
+
+    const messageBox = document.createElement('div');
+    messageBox.id = 'overlayMessage';
+    messageBox.innerHTML = `
+        <p>${winner} победил</p>
+        <button id="exitButton">Выйти</button>
+    `;
+
+    overlay.appendChild(messageBox);
+    document.body.appendChild(overlay);
+
+    document
+        .getElementById('exitButton')
+        .addEventListener('click', () => exitGame(login, password, gameID));
 }
