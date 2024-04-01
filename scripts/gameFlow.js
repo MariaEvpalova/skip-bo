@@ -91,6 +91,7 @@ async function roundFirstPart(login, password, gameID) {
 }
 
 function roundSecondPart(login, password, gameID) {
+    removeAllSelectedCards();
     document
         .querySelectorAll('#playerHand .cards button')
         .forEach((element) => {
@@ -120,6 +121,7 @@ function roundSecondPart(login, password, gameID) {
 }
 
 async function endTurn(login, password, gameID) {
+    removeAllSelectedCards();
     const data = await fetchData('finishTurn', [login, password, gameID]);
     const firstKey = Object.keys(data['RESULTS'][0]);
     if (firstKey === 'ERROR') console.log(data['RESULTS'][0][firstKey]);

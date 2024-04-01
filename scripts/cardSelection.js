@@ -3,6 +3,20 @@ const HandToGameStates = {
     cardID: null,
 };
 
+function removeAllSelectedCards() {
+    const selectedButtons = document.querySelectorAll(
+        '#playerHand .cards button.selected'
+    );
+
+    selectedButtons.forEach((button) => {
+        button.classList.remove('selected');
+    });
+
+    HandToGameStates.handCardPressed = false;
+    StockToGameStates.stockCardPressed = false;
+    DiscardToGameStates.discardCardPressed = false;
+}
+
 function HandToGame_handleHandCard(login, password, gameID, cardID) {
     HandToGameStates.handCardPressed = !HandToGameStates.handCardPressed;
     HandToGameStates.cardID = HandToGameStates.handCardPressed ? cardID : null;

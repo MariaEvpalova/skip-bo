@@ -19,6 +19,7 @@ html {
 body {
     border: 1.5vw solid #f166a0;
     border-radius: 64px;
+    margin-bottom: 10vh;
 }
 
 #rules > main > div {

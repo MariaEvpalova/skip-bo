@@ -20,6 +20,7 @@ async function HandToGamePile(login, password, gameID, cardID, gamePileID) {
         cardButtons.forEach((button) => {
             if (button.id) {
                 button.addEventListener('click', function () {
+                    removeAllSelectedCards();
                     button.classList.toggle('selected');
                     HandToGame_handleHandCard(
                         login,
@@ -57,6 +58,7 @@ async function StockToGamePile(login, password, gameID, cardID, gamePileID) {
 
             const stockButton = document.querySelector('.stock-card-button');
             stockButton.addEventListener('click', function () {
+                removeAllSelectedCards();
                 stockButton.classList.toggle('selected');
                 StockToGame_handleStockCard(
                     login,
@@ -90,6 +92,7 @@ async function DiscardToGamePile(login, password, gameID, cardID, gamePileID) {
         cardButtons.forEach((button) => {
             if (button.id) {
                 button.addEventListener('click', function () {
+                    removeAllSelectedCards();
                     button.classList.toggle('selected');
                     DiscardToGame_handleDiscardCard(
                         login,
