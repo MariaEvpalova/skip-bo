@@ -3,6 +3,7 @@ function addHandToGameInteractions(login, password, gameID) {
     cardButtons.forEach((button) => {
         if (button.id) {
             button.addEventListener('click', function () {
+                button.classList.toggle('selected');
                 HandToGame_handleHandCard(login, password, gameID, button.id);
             });
         }
@@ -19,6 +20,7 @@ function addHandToGameInteractions(login, password, gameID) {
 function addStockToGameInteractions(login, password, gameID) {
     const stockButton = document.querySelector('.stock-card-button');
     stockButton.addEventListener('click', function () {
+        stockButton.classList.toggle('selected');
         StockToGame_handleStockCard(login, password, gameID, stockButton.id);
     });
 
@@ -35,6 +37,7 @@ function addDiscardToGameInteractions(login, password, gameID) {
     cardButtons.forEach((button) => {
         if (button.id) {
             button.addEventListener('click', function () {
+                button.classList.toggle('selected');
                 DiscardToGame_handleDiscardCard(
                     login,
                     password,

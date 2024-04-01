@@ -19,22 +19,6 @@ async function updateScreen(login, password, gameID) {
 }
 
 let intervalId = null;
-/*
-    if (intervalId === null) {
-        // Prevent multiple intervals from being created
-        intervalId = setInterval(() => {
-            console.log('This function is executed every 1 second');
-        }, 1000);
-        console.log('Interval started.');
-    }
-*/
-/*
-    if (intervalId !== null) {
-        clearInterval(intervalId);
-        intervalId = null; // Reset the intervalId
-        console.log('Interval stopped.');
-    }
-*/
 
 function waitingPlayersStage(login, password, gameID) {
     if (intervalId !== null) {
@@ -42,8 +26,10 @@ function waitingPlayersStage(login, password, gameID) {
         intervalId = null;
     }
     intervalId = setInterval(() => {
-        updateScreen(login, password, gameID);
+        displayMainDrawPile(login, password, gameID);
+        displayOthersCards(login, password, gameID);
     }, 1000);
+    setMessage('Ожидание игроков');
 }
 
 async function waitingTurnStage(login, password, gameID) {
@@ -52,6 +38,9 @@ async function waitingTurnStage(login, password, gameID) {
         intervalId = null;
     }
     intervalId = setInterval(async () => {
+        await displayGamePiles(login, password, gameID);
+        await displayMainDrawPile(login, password, gameID);
+        await displayOthersCards(login, password, gameID);
         const winner = await gameWinner(gameID);
         if (winner != null) loadOtherWinMessage(login, password, gameID);
         else {
@@ -59,11 +48,11 @@ async function waitingTurnStage(login, password, gameID) {
             if (isCurrent) roundFirstPart(login, password, gameID);
         }
     }, 1000);
+    setMessage('Ожидайте ход');
 }
 
 async function startGame(login, password, gameID) {
     if (intervalId !== null) {
-        console.log('clear interval in start game');
         clearInterval(intervalId);
         intervalId = null;
     }
@@ -77,18 +66,28 @@ async function startGame(login, password, gameID) {
     }
 }
 
+let roundStarted = false;
+
 async function roundFirstPart(login, password, gameID) {
+    if (roundStarted) return;
+
+    roundStarted = true;
+
     if (intervalId !== null) {
         clearInterval(intervalId);
         intervalId = null;
     }
 
-    removeStartGameButton();
-    addFinishTurnButton(login, password, gameID);
+    setTimeout(function () {
+        removeStartGameButton();
+        addFinishTurnButton(login, password, gameID);
 
-    addHandToGameInteractions(login, password, gameID);
-    addStockToGameInteractions(login, password, gameID);
-    addDiscardToGameInteractions(login, password, gameID);
+        addHandToGameInteractions(login, password, gameID);
+        addStockToGameInteractions(login, password, gameID);
+        addDiscardToGameInteractions(login, password, gameID);
+
+        setMessage('Ваш ход');
+    }, 1000);
 }
 
 function roundSecondPart(login, password, gameID) {
@@ -116,6 +115,8 @@ function roundSecondPart(login, password, gameID) {
     removeFinishTurnButton();
 
     addHandToDiscardInteractions(login, password, gameID);
+
+    setMessage('Положите карту в Discard');
 }
 
 async function endTurn(login, password, gameID) {
@@ -129,6 +130,7 @@ async function endTurn(login, password, gameID) {
             const newElement = element.cloneNode(true);
             element.parentNode.replaceChild(newElement, element);
         });
+    roundStarted = false;
     waitingTurnStage(login, password, gameID);
 }
 

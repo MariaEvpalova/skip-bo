@@ -8,10 +8,11 @@ async function HandToGamePile(login, password, gameID, cardID, gamePileID) {
     ]);
     const firstKey = Object.keys(data['RESULTS'][0])[0];
     if (firstKey === 'ERROR') {
-        console.log(data['RESULTS'][0][firstKey]);
+        setMessage(data['RESULTS'][0][firstKey]);
     } else {
         await displayPlayerHand(login, password, gameID);
         await displayGamePiles(login, password, gameID);
+        await displayMainDrawPile(login, password, gameID);
 
         const cardButtons = document.querySelectorAll(
             '#playerHand .cards button'
@@ -19,6 +20,7 @@ async function HandToGamePile(login, password, gameID, cardID, gamePileID) {
         cardButtons.forEach((button) => {
             if (button.id) {
                 button.addEventListener('click', function () {
+                    button.classList.toggle('selected');
                     HandToGame_handleHandCard(
                         login,
                         password,
@@ -44,7 +46,7 @@ async function StockToGamePile(login, password, gameID, cardID, gamePileID) {
     console.log(data);
     const firstKey = Object.keys(data['RESULTS'][0]);
     if (firstKey === 'ERROR') {
-        console.log(data['RESULTS'][0][firstKey]);
+        setMessage(data['RESULTS'][0][firstKey]);
     } else {
         const winner = await gameWinner(gameID);
         if (winner == login) {
@@ -55,6 +57,7 @@ async function StockToGamePile(login, password, gameID, cardID, gamePileID) {
 
             const stockButton = document.querySelector('.stock-card-button');
             stockButton.addEventListener('click', function () {
+                stockButton.classList.toggle('selected');
                 StockToGame_handleStockCard(
                     login,
                     password,
@@ -78,7 +81,7 @@ async function DiscardToGamePile(login, password, gameID, cardID, gamePileID) {
     ]);
     const firstKey = Object.keys(data['RESULTS'][0])[0];
     if (firstKey === 'ERROR') {
-        console.log(data['RESULTS'][0][firstKey]);
+        setMessage(data['RESULTS'][0][firstKey]);
     } else {
         await displayPlayerDiscard(login, password, gameID);
         await displayGamePiles(login, password, gameID);
@@ -87,6 +90,7 @@ async function DiscardToGamePile(login, password, gameID, cardID, gamePileID) {
         cardButtons.forEach((button) => {
             if (button.id) {
                 button.addEventListener('click', function () {
+                    button.classList.toggle('selected');
                     DiscardToGame_handleDiscardCard(
                         login,
                         password,
@@ -110,7 +114,7 @@ async function HandToDiscard(login, password, gameID, cardID) {
     ]);
     const firstKey = Object.keys(data['RESULTS'][0])[0];
     if (firstKey === 'ERROR') {
-        console.log(data['RESULTS'][0][firstKey]);
+        setMessage(data['RESULTS'][0][firstKey]);
     } else {
         await displayPlayerHand(login, password, gameID);
         await displayPlayerDiscard(login, password, gameID);

@@ -14,6 +14,7 @@ function initGameField() {
                 </div>
             </div>
             <div id="playerHand">
+                <p id="message"></p>
                 <div class="cards"></div>
                 <div id="playerName">
                     <h2>PlayerName hand</h2>
@@ -84,6 +85,10 @@ function removeStartGameButton() {
 }
 
 function loadWinMessage(login, password, gameID) {
+    clearInterval(intervalId);
+    intervalId = null;
+    if (document.getElementById('overlay')) return;
+
     const overlay = document.createElement('div');
     overlay.id = 'overlay';
 
@@ -103,6 +108,9 @@ function loadWinMessage(login, password, gameID) {
 }
 
 async function loadOtherWinMessage(login, password, gameID) {
+    clearInterval(intervalId);
+    intervalId = null;
+    if (document.getElementById('overlay')) return;
     const winner = await gameWinner(gameID);
 
     const overlay = document.createElement('div');
@@ -120,5 +128,9 @@ async function loadOtherWinMessage(login, password, gameID) {
 
     document
         .getElementById('exitButton')
-        .addEventListener('click', () => exitGame(login, password, gameID));
+        .addEventListener('click', () => setupGamePage(login, password));
+}
+
+function setMessage(message) {
+    document.getElementById('message').innerHTML = message;
 }

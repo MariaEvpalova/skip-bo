@@ -13,8 +13,10 @@ async function setupGamePage(login, password) {
             <button id="logoutButton">Выйти</button>
         </header>
         <main>
-            <h1>Мои игры</h1>
-            <div class="grid my-games"></div>
+            <h1>Созданные игры</h1>
+            <div class="grid created-games"></div>
+            <h1>Текущие игры</h1>
+            <div class="grid current-games"></div>
             <h1>Доступные игры</h1>
             <div class="grid available-games"></div>
         </main>
@@ -73,28 +75,45 @@ async function setupGamePage(login, password) {
 
     try {
         const data = await fetchData('auth', [login, password]);
-        const playerGamesData = data['RESULTS'][1];
+        const createdGamesData = data['RESULTS'][2];
 
-        let playerGameElements = ``;
-        for (let i = 0; i < playerGamesData.ID.length; i++) {
-            playerGameElements += `
+        let createdGamesElements = ``;
+        for (let i = 0; i < createdGamesData.ID.length; i++) {
+            createdGamesElements += `
                 <div class="game">
-                    <h2>Игра ${playerGamesData.ID[i]}</h2>
+                    <h2>Игра ${createdGamesData.ID[i]}</h2>
                     <ul>
-                    <li>Продолжительность хода ${playerGamesData.move_duration[i]}</li>
-                    <li>${playerGamesData.current_players[i]} игрока</li>
-                        <li>Макс. ${playerGamesData.num_players[i]} игрока</li>
+                        <li>Продолжительность хода ${createdGamesData.move_duration[i]}</li>
+                        <li>${createdGamesData.current_players[i]} игрока</li>
+                        <li>Макс. ${createdGamesData.num_players[i]} игрока</li>
                     </ul>
-                    <button onclick="enterGame('${login}', '${password}', ${playerGamesData.ID[i]})">Присоединиться</button>
+                    <button onclick="enterGame('${login}', '${password}', ${createdGamesData.ID[i]})">Присоединиться</button>
                 </div>
             `;
         }
 
-        const availableGamesData = data['RESULTS'][2];
+        const currentGamesData = data['RESULTS'][4];
 
-        let availableGameElements = ``;
+        let currentGamesElements = ``;
+        for (let i = 0; i < currentGamesData.ID.length; i++) {
+            currentGamesElements += `
+                <div class="game">
+                    <h2>Игра ${currentGamesData.ID[i]}</h2>
+                    <ul>
+                        <li>Продолжительность хода ${currentGamesData.move_duration[i]}</li>
+                        <li>${currentGamesData.current_players[i]} игрока</li>
+                        <li>Макс. ${currentGamesData.num_players[i]} игрока</li>
+                    </ul>
+                    <button onclick="enterGame('${login}', '${password}', ${currentGamesData.ID[i]})">Присоединиться</button>
+                </div>
+            `;
+        }
+
+        const availableGamesData = data['RESULTS'][6];
+
+        let availablesGamesElements = ``;
         for (let i = 0; i < availableGamesData.ID.length; i++) {
-            availableGameElements += `
+            availablesGamesElements += `
                 <div class="game">
                     <h2>Игра ${availableGamesData.ID[i]}</h2>
                     <ul>
@@ -108,9 +127,12 @@ async function setupGamePage(login, password) {
             //<li>Админ ${availableGamesData.admin_login[i]}</li>
         }
 
-        document.querySelector('.grid.my-games').innerHTML = playerGameElements;
+        document.querySelector('.grid.created-games').innerHTML =
+            createdGamesElements;
+        document.querySelector('.grid.current-games').innerHTML =
+            currentGamesElements;
         document.querySelector('.grid.available-games').innerHTML =
-            availableGameElements;
+            availablesGamesElements;
 
         document
             .getElementById('logoutButton')
