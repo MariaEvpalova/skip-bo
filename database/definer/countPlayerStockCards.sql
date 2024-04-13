@@ -1,0 +1,30 @@
+CREATE PROCEDURE countPlayerStockCards(
+    IN user_login_param VARCHAR(30),
+    IN user_password_param VARCHAR(255),
+    IN game_id_param INT
+)
+COMMENT "(user_login VARCHAR(30), user_password VARCHAR(255), game_id_param INT) - Подсчитывает количество карт в запасе игрока."
+SQL SECURITY DEFINER
+BEGIN
+    DECLARE player_id_val INT;
+    DECLARE hashed_password_val VARCHAR(255);
+    DECLARE is_valid_password BOOLEAN;
+
+    SELECT ID INTO player_id_val
+    FROM Players
+    WHERE user_login = user_login_param AND game_id = game_id_param;
+
+    SELECT password INTO hashed_password_val
+    FROM Users
+    WHERE login = user_login_param;
+
+    SET is_valid_password = (hashed_password_val = hashing(user_password_param));
+
+    IF is_valid_password THEN
+        SELECT COUNT(*) AS StockCardCount
+        FROM CardsStock
+        WHERE player_id = player_id_val;
+    ELSE
+        SELECT "Invalid password or game ID. Cannot count player's stock cards." AS ERROR;
+    END IF;
+END;
